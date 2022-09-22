@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  python:
+    build: django_conf
+    container_name: django
+    volumes:
+      - ./django_conf:/srv/
+    env_file:
+      - django.env
+    expose:
+      - 8000
+    command:
+      "
+        gunicorn --workers=2 --bind=0.0.0.0:8000 django_conf.wsgi:application
+        && python create_db.py
+        && python manage.py makemigrations
+        && python manage.py migrate
+        && python manage.py collectstatic --no-input
+        && python manage.py loaddata initial_data.json
+        "
+    depends_on:
+      - postgres
+  nginx:
+    container_name: nginx
+    restart: always
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./django_conf/staticfiles:/srv/staticfiles
+    depends_on:
+      - python
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
