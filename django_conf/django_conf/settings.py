@@ -80,7 +80,7 @@ DATABASES = {
         'USER': 'django',
         'PASSWORD': 'django',
         'HOST': '172.18.0.1',   # comment to run locally
-        # 'HOST': '127.0.0.1',  ## uncomment to run locally
+        # 'HOST': '127.0.0.1',  # uncomment to run locally
         'PORT': '5432',
     }
 }
