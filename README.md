@@ -57,7 +57,7 @@ In order to connect to Django container's shell to execute some commands,
 docker exec -it django /bin/bash
 ```
 If you want to connect to other container just change container name in  command above  
-to other services's name defined in **docker-compose.yml**
+to other service's name defined in **docker-compose.yml**
 
 ### Adding Django fixtures
 Docker Compose file is prepared for uploading your initial data. It uses  **initial_data.json**  
