@@ -67,3 +67,13 @@ that run following command:
 django-admin dumpdata --exclude=auth --exclude=contenttypes -o initial_data.json
 ```
 Learn more in [docs](https://docs.djangoproject.com/en/4.1/ref/django-admin/#dumpdata).
+
+### Changing ports
+If you want to run your app in different port (by deafult in users 80 http port) simply  
+change it in **docker-compose.yml**:
+```
+nginx:
+    ...
+    ports:
+      - '8000:80'
+```
